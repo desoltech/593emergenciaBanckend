@@ -14,6 +14,17 @@ use Carbon\Carbon;
 
 class ControladorLogin extends BaseController
 {
+
+    /**
+     * Create a new AuthController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['login']]);
+    }
+
     /**
      * login api
      *
@@ -22,36 +33,21 @@ class ControladorLogin extends BaseController
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
+            'cedula' => 'required',
             'password' => 'required',
         ]);
 
-        $credenciales = request(['email', 'password']);
-
-        if (!Auth::attempt($credenciales)) {
-            return response()->json([
-                'message' => 'Unauthorized'
-            ], 401);
+        if($validator->fails()){
+            return $this->sendError('Error de validación.', $validator->errors());
         }
 
-        $user = $request->user();
-
-        $tokenResult = $user->createToken('Personal Access Token');
-
-        $token = $tokenResult->token;
-
-        if ($request->remember_me) {
-            $token->expires_at = Carbon::now()->addWeeks(1);
+        $credentials = $request->only('cedula', 'password');
+        
+        if ($token = $this->guard()->attempt($credentials)) {
+            return $this->respondWithToken($token);
         }
 
-        $token->save();
-
-        return response()->json([
-            'access_token' => $tokenResult->accessToken,
-            'token_type' => 'Bearer',
-            'expires_at' => Carbon::parse($tokenResult->token->expires_at)
-                ->toDateTimeString()
-        ]);
+        return response()->json(['error' => 'Unauthorized'], 401);
     }
 
     public function logout(Request $request)
@@ -70,5 +66,15 @@ class ControladorLogin extends BaseController
     public function user(Request $request)
     {
         return response()->json($request->user());
+    }
+
+    /**
+     * Get the guard to be used during authentication.
+     *
+     * @return \Illuminate\Contracts\Auth\Guard
+     */
+    public function guard()
+    {
+        return Auth::guard();
     }
 }

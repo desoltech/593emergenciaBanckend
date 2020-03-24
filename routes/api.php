@@ -19,10 +19,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::group([ 'middleware' => 'auth.jwt' ], function () {
-    Route::post('login', 'AuthController@login');
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
     Route::post('me', 'AuthController@me');
+
+    Route::post('/help-requests', 'AuthController@me');
 });
 
 // rutas no protegidas

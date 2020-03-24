@@ -6,23 +6,13 @@ use Tests\TestCase;
 
 class UserTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
-    public function testExample()
-    {
-        $this->assertTrue(true);
-    }
-
      /**
      * @test
      */
     public function crear_usuario()
     {
 
-        $this->withoutExceptionHandling();
+        // $this->withoutExceptionHandling();
 
         $response = $this->postJson('/api/register', [
             'nombres' => 'Maria Jose',
@@ -42,6 +32,34 @@ class UserTest extends TestCase
             ->assertStatus(201)
             ->assertJson([
                 'created' => true,
+            ]);
+        
+        
+    }
+
+    /** @test */
+    public function loguear_usuario()
+    {
+
+        $this->withoutExceptionHandling();
+
+        $user = \factory(\App\User::class)->create();
+
+        $response = $this->postJson('/api/login', [
+            'cedula' => $user->cedula,
+            'password' => 'password',
+        ]);
+
+        // $response->dump();
+
+        // $response->dumpHeaders();
+
+        // $response->dumpSession();
+
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                'token_type' => 'bearer',
             ]);
         
         
