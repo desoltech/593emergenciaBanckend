@@ -16,3 +16,15 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::group([ 'middleware' => 'auth.jwt' ], function () {
+    Route::post('login', 'AuthController@login');
+    Route::post('logout', 'AuthController@logout');
+    Route::post('refresh', 'AuthController@refresh');
+    Route::post('me', 'AuthController@me');
+});
+
+// rutas no protegidas
+Route::post('register', 'API\ControladorRegistro@register');
+Route::post('login', 'API\ControladorLogin@login');

@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class UserTest extends TestCase
 {
@@ -17,14 +17,40 @@ class UserTest extends TestCase
     }
 
      /**
-     * A basic unit test example.
-     *
-     * @return void
+     * @test
      */
-    public function guardarUsuario()
+    public function crear_usuario()
     {
-        $this->assertTrue(true);
+
+        $this->withoutExceptionHandling();
+
+        $response = $this->postJson('/api/register', [
+            'nombres' => 'Maria Jose',
+            'apellidos' => 'Lopez Lopez',
+            'cedula' => '1723749501',
+            'password' => 'Maria1234',
+        ]);
+
+        // $response->dump();
+
+        // $response->dumpHeaders();
+
+        // $response->dumpSession();
+
+
+        $response
+            ->assertStatus(201)
+            ->assertJson([
+                'created' => true,
+            ]);
+        
+        
     }
 
+    protected function tearDown(): void
+    {
+        // eliminar todos los registros creados
+        \App\User::truncate();
+    }
 
 }
