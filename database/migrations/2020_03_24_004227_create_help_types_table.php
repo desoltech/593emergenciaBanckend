@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateToHelpRequestsTable extends Migration
+class CreateHelpTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateToHelpRequestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('to_help_requests', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->bigInteger('id_request');
+        Schema::create('help_types', function (Blueprint $table) {
+            $table->tinyIncrements('id');
+            $table->text('name');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ class CreateToHelpRequestsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('to_help_requests');
+        Schema::dropIfExists('help_types');
     }
 }

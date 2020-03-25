@@ -40,7 +40,6 @@ class UserTest extends TestCase
     /** @test */
     public function loguear_usuario()
     {
-
         $this->withoutExceptionHandling();
 
         $user = \factory(\App\User::class)->create();
@@ -61,8 +60,6 @@ class UserTest extends TestCase
             ->assertJson([
                 'token_type' => 'bearer',
             ]);
-        
-        
     }
 
     protected function tearDown(): void

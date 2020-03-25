@@ -23,7 +23,8 @@ Route::group([ 'middleware' => 'auth.jwt' ], function () {
     Route::post('refresh', 'AuthController@refresh');
     Route::post('me', 'AuthController@me');
 
-    Route::post('/help-requests', 'AuthController@me');
+    Route::post('/help-type', 'HelpTypeController@store');
+    Route::post('/requests', 'HelpRequestController@store');
 });
 
 // rutas no protegidas

@@ -15,10 +15,11 @@ class CreateRequestsTable extends Migration
     {
         Schema::create('requests', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('id_user');
-            $table->enum('type', ['help', 'to-help']);
+            $table->bigInteger('user_id');
+            $table->enum('type', ['obtener-ayuda', 'dar-ayuda']);
             $table->tinyInteger('id_help_type');
-            $table->text('comments');
+            $table->text('ubic_coordinates');
+            $table->text('comments')->nullable();
             $table->timestamps();
         });
     }
