@@ -37,4 +37,12 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    /**
+     * Customize field for authentication
+     */
+    public function username()
+    {
+        return 'cedula';
+    }
 }
